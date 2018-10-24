@@ -57,7 +57,7 @@ namespace DLT
                 DataTable data = SqlOperation.Returnqueryresults(_ParameterList.ToArray<SqlParameter>());
                 //DataTable data = ClsMSSQL.返回查询结果(new SqlCommand("select * from tlogin where loginname = @loginname and password = @password"), _ParameterList.ToArray<SqlParameter>());
                 string sJSON = JsonConvert.SerializeObject(data, Formatting.Indented);
-                ResponseResult.LoginSuess("ok","");
+                ResponseResult.LoginSuess("ok","^");
                 //return sJSON;
                 HttpContext.Current.Response.ContentType = "application/text";
                 HttpContext.Current.Response.Write(sJSON);

@@ -42,21 +42,30 @@ namespace WinForm
                 Stream stream1 = resp.GetResponseStream();
                 StreamReader sr = new StreamReader(stream1, Encoding.UTF8);
                 string respBody = sr.ReadToEnd();
-               
 
+                
+               
                 textBox.Text = respBody;
+
+
+               if (respBody.IndexOf("true") != -1)
+                {
+                    button1.Visible= false;
+                   lblid.Visible = true;
+                   lblname.Visible = true;
+                    txtjgid.Visible = true;
+                   txtjgname.Visible = true;
+                    button3.Visible = true;
+                    button2.Visible = true;
+                    button4.Visible = true;
+                    label3.Visible = true;
+                    txtnewpwd.Visible = true;
+                    txtname.Enabled = false;
+                    txtpwd.Enabled = false;
+                }
+
             }
-            lblid.Visible = true;
-            lblname.Visible = true;
-            txtjgid.Visible = true;
-            txtjgname.Visible = true;
-            button3.Visible = true;
-            button2.Visible = true;
-            button3.Visible = true;
-            label3.Visible= true;
-            txtnewpwd.Visible = true;
-            txtname.Enabled = false;
-            txtpwd.Enabled = false;
+           
 
         }
 
@@ -113,6 +122,27 @@ namespace WinForm
                 textBox.Text = respBody;
 
             }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            button4.Visible = false;
+            txtname.Clear();
+            txtpwd.Clear();
+            button1.Visible = true;
+            lblid.Visible = false;
+            lblname.Visible = false;
+            txtjgid.Visible = false;
+            txtjgname.Visible = false;
+            button3.Visible = false;
+            button2.Visible = false;
+         
+            label3.Visible = false;
+            txtnewpwd.Visible = false;
+            txtname.Enabled = true;
+            txtpwd.Enabled = true;
+            button1.Visible = true;
+            textBox.Clear();
         }
     }
     }
