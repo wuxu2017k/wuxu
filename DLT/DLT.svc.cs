@@ -11,6 +11,9 @@ using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Web;
 using System.Text;
+using System.Web;
+using Newtonsoft.Json;
+using System.Data.SqlClient;
 
 namespace DLT
 {
@@ -25,19 +28,35 @@ namespace DLT
         //         WebOperationContext.Current.OutgoingResponse.ContentType = "text/xml";
         [OperationContract]
         [WebInvoke(Method = "POST", UriTemplate = "LogIn", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
-        public string LogIn(Stream dt)
+        public void LogIn(Stream dt)
         {
-            StreamReader reader = new StreamReader(dt);
+            string _result = "";
+            StreamReader reader = new StreamReader(dt, Encoding.UTF8);
             string body = reader.ReadToEnd();
             Debug.Print(body);
-            string[] str = body.Split('|');
-            string name = str[0].ToString();
-            string pwd = str[1].ToString();
-            string select = "SELECT * FROM [dbo].[tlogin] where [loginname]='" + name.Trim() + "'and [password]='" + pwd.Trim() + "'";
+            Dictionary<string, object> _ReqDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(body);
+            string name = "";
+            string pwd = "";
+            try
+            {
+                name = _ReqDic["LoginName"].ToString().Trim();
+                pwd = _ReqDic["Password"].ToString().Trim();
+            }
+            catch
+            {
+                ResponseResult.ErrorResponse("未输入用户名或密码", "ONWATER");
+                return;
+            }
+
+            List<SqlParameter> _ParameterList = new List<SqlParameter>();
+            _ParameterList.Add(new SqlParameter("@loginname", name));
+            _ParameterList.Add(new SqlParameter("@password", pwd));
+            DataTable data = ClsMSSQL.返回查询结果(new SqlCommand("select * from tlogin where loginname = @loginname and password = @password"), _ParameterList.ToArray<SqlParameter>());
            
-            DataTable data = ClsMSSQL.GetDataTable(select, ClsDBCon.ConStrKj);
             string sJSON = JsonConvert.SerializeObject(data, Formatting.Indented);
-            return sJSON;
+            //return sJSON;
+            HttpContext.Current.Response.ContentType = "application/text";
+            HttpContext.Current.Response.Write(sJSON);
 
         }
         [OperationContract]

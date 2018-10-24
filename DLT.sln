@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLTLib", "..\wuxu\VMG\WCFTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinForm", "WinForm\WinForm.csproj", "{940D9F61-214E-40C0-9127-80BA5250FA3B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLTLIb_user", "DLTLIb_user\DLTLIb_user.csproj", "{22592F02-596B-4E02-A075-6787FDBCFCAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{940D9F61-214E-40C0-9127-80BA5250FA3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{940D9F61-214E-40C0-9127-80BA5250FA3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{940D9F61-214E-40C0-9127-80BA5250FA3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22592F02-596B-4E02-A075-6787FDBCFCAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22592F02-596B-4E02-A075-6787FDBCFCAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22592F02-596B-4E02-A075-6787FDBCFCAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22592F02-596B-4E02-A075-6787FDBCFCAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

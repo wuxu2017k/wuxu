@@ -22,8 +22,11 @@ namespace WinForm
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string str = txtname.Text.Trim() +"|"+ txtpwd.Text.Trim();
-            string requestUrl = "http://localhost:34253//DLT.svc/LogIn";
+            Dictionary<string, object> _WriteDic = new Dictionary<string, object>();
+            _WriteDic.Add("LoginName", txtname.Text.Trim());
+            _WriteDic.Add("Password", txtpwd.Text.Trim());
+            string str = JsonConvert.SerializeObject(_WriteDic);
+            string requestUrl = "http://127.0.0.1/DLT/DLT.svc/LogIn";
             HttpWebRequest req = WebRequest.Create(requestUrl) as HttpWebRequest;
             req.Method = "POST";
             byte[] barr = Encoding.UTF8.GetBytes(str.Trim());//将串转换为字节数组
@@ -38,7 +41,7 @@ namespace WinForm
                 lst.Items.Add(string.Format("返回状态码:{0}", (int)resp.StatusCode));
                 lst.Items.Add(string.Format("返回状态描述:{0}", resp.StatusDescription));
                 Stream stream1 = resp.GetResponseStream();
-                StreamReader sr = new StreamReader(stream1);
+                StreamReader sr = new StreamReader(stream1, Encoding.UTF8);
                 string respBody = sr.ReadToEnd();
                
                 lst.Items.Add(respBody);
@@ -60,7 +63,7 @@ namespace WinForm
         private void button2_Click(object sender, EventArgs e)
         {
             string str = txtname.Text.Trim()+"|"+txtnewpwd.Text.Trim();
-            string requestUrl = "http://localhost:34253//DLT.svc/SET";
+            string requestUrl = "http://127.0.0.1/DLT/DLT.svc/SET";
             HttpWebRequest req = WebRequest.Create(requestUrl) as HttpWebRequest;
             req.Method = "POST";
             byte[] barr = Encoding.UTF8.GetBytes(str.Trim());//将串转换为字节数组
@@ -85,7 +88,7 @@ namespace WinForm
         private void button3_Click(object sender, EventArgs e)
         {
             string str = txtjgid.Text.Trim() + "|" + txtjgname.Text.Trim();
-            string requestUrl = "http://localhost:34253//DLT.svc/SELECT";
+            string requestUrl = "http://127.0.0.1/DLT/DLT.svc/SELECT";
             HttpWebRequest req = WebRequest.Create(requestUrl) as HttpWebRequest;
             req.Method = "POST";
             byte[] barr = Encoding.UTF8.GetBytes(str.Trim());//将串转换为字节数组
