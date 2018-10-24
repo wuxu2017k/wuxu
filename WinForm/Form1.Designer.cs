@@ -166,6 +166,7 @@
             // textBox
             // 
             this.textBox.Dock = System.Windows.Forms.DockStyle.Right;
+            this.textBox.Enabled = false;
             this.textBox.Location = new System.Drawing.Point(259, 0);
             this.textBox.Multiline = true;
             this.textBox.Name = "textBox";

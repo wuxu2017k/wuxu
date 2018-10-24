@@ -80,8 +80,8 @@ namespace DLT
             string newpwd = "";
             try
             {
-                name = _ReqDic["LoginName"].ToString().Trim();
-                newpwd = _ReqDic["NewPassword"].ToString().Trim();
+                name = _ReqDic["loginname"].ToString().Trim();
+                newpwd = _ReqDic["newpassword"].ToString().Trim();
             }
             catch
             {
@@ -93,7 +93,7 @@ namespace DLT
             List<SqlParameter> _ParameterList = new List<SqlParameter>();
             _ParameterList.Add(new SqlParameter("@loginname", name));
             _ParameterList.Add(new SqlParameter("@newpassword", newpwd));
-            int data = SqlOperation.UpDat(_ParameterList.ToArray<SqlParameter>());
+             int data = SqlOperation.UpDat(_ParameterList.ToArray<SqlParameter>());
             string sJSON = JsonConvert.SerializeObject(data, Formatting.Indented);
             if (Convert.ToInt32(sJSON) == 1)
             {

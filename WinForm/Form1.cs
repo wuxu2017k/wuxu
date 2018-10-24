@@ -26,7 +26,7 @@ namespace WinForm
             _WriteDic.Add("LoginName", txtname.Text.Trim());
             _WriteDic.Add("Password", txtpwd.Text.Trim());
             string str = JsonConvert.SerializeObject(_WriteDic);
-            string requestUrl = "http://localhost:34253/DLT.svc/LogIn";
+            string requestUrl = "http://127.0.0.1/DLT/DLT.svc/LogIn";
             HttpWebRequest req = WebRequest.Create(requestUrl) as HttpWebRequest;
             req.Method = "POST";
             byte[] barr = Encoding.UTF8.GetBytes(str.Trim());//将串转换为字节数组
@@ -73,10 +73,10 @@ namespace WinForm
         {
 
             Dictionary<string, object> _WriteDic = new Dictionary<string, object>();
-            _WriteDic.Add("LoginName", txtname.Text.Trim());
-            _WriteDic.Add("NewPassword", txtnewpwd.Text.Trim());
+            _WriteDic.Add("loginname", txtname.Text.Trim());
+            _WriteDic.Add("newpassword", txtnewpwd.Text.Trim());
             string str = JsonConvert.SerializeObject(_WriteDic);
-            string requestUrl = "http://localhost:34253/DLT.svc/SET";//http://127.0.0.1/DLT/DLT.svc/SET
+            string requestUrl = "http://127.0.0.1/DLT/DLT.svc/SET";//http://localhost:34253/DLT.svc/SET
             HttpWebRequest req = WebRequest.Create(requestUrl) as HttpWebRequest;
             req.Method = "POST";
             byte[] barr = Encoding.UTF8.GetBytes(str.Trim());//将串转换为字节数组
@@ -88,7 +88,6 @@ namespace WinForm
             }
             using (HttpWebResponse resp = req.GetResponse() as HttpWebResponse)
             {
-                
                 Stream stream1 = resp.GetResponseStream();
                 StreamReader sr = new StreamReader(stream1);
                 string respBody = sr.ReadToEnd();
@@ -103,7 +102,7 @@ namespace WinForm
             _WriteDic.Add("ygid", txtjgid.Text.Trim());
             _WriteDic.Add("role", txtjgname.Text.Trim());
             string str = JsonConvert.SerializeObject(_WriteDic);
-            string requestUrl = "http://localhost:34253/DLT.svc/SELECT";//http://127.0.0.1/DLT/DLT.svc/SELECT
+            string requestUrl = "http://127.0.0.1/DLT/DLT.svc/SELECT";//http://localhost:34253/DLT.svc/SELECT
             HttpWebRequest req = WebRequest.Create(requestUrl) as HttpWebRequest;
             req.Method = "POST";
             byte[] barr = Encoding.UTF8.GetBytes(str.Trim());//将串转换为字节数组
@@ -127,6 +126,9 @@ namespace WinForm
         private void button4_Click(object sender, EventArgs e)
         {
             button4.Visible = false;
+            txtjgid.Clear();
+            txtjgname.Clear();
+            txtnewpwd.Clear();
             txtname.Clear();
             txtpwd.Clear();
             button1.Visible = true;
