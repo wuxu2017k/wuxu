@@ -44,6 +44,7 @@ namespace DLT
             }
             catch
             {
+                
                 ResponseResult.ErrorResponse("未输入用户名或密码", "ONWATER");
                 return;
             }
@@ -51,46 +52,104 @@ namespace DLT
             List<SqlParameter> _ParameterList = new List<SqlParameter>();
             _ParameterList.Add(new SqlParameter("@loginname", name));
             _ParameterList.Add(new SqlParameter("@password", pwd));
-            DataTable data = ClsMSSQL.返回查询结果(new SqlCommand("select * from tlogin where loginname = @loginname and password = @password"), _ParameterList.ToArray<SqlParameter>());
-           
-            string sJSON = JsonConvert.SerializeObject(data, Formatting.Indented);
-            //return sJSON;
-            HttpContext.Current.Response.ContentType = "application/text";
-            HttpContext.Current.Response.Write(sJSON);
-
+            if(ClsMSSQL.Exists1("tlogin","loginname",name,"password",pwd,ClsDBCon.ConStrKj))
+            {
+                DataTable data = SqlOperation.Returnqueryresults(_ParameterList.ToArray<SqlParameter>());
+                //DataTable data = ClsMSSQL.返回查询结果(new SqlCommand("select * from tlogin where loginname = @loginname and password = @password"), _ParameterList.ToArray<SqlParameter>());
+                string sJSON = JsonConvert.SerializeObject(data, Formatting.Indented);
+                ResponseResult.LoginSuess("ok","");
+                //return sJSON;
+                HttpContext.Current.Response.ContentType = "application/text";
+                HttpContext.Current.Response.Write(sJSON);
+            }
+            else
+            {
+                ResponseResult.UserNO("账户或密码不正确", "");
+            }
         }
         [OperationContract]
         [WebInvoke(Method = "POST", UriTemplate = "SET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
-        public string SET(Stream dt)
+        public void SET(Stream dt)
         {
-            StreamReader reader = new StreamReader(dt);
+            string _result = "";
+            StreamReader reader = new StreamReader(dt, Encoding.UTF8);
             string body = reader.ReadToEnd();
             Debug.Print(body);
-            string[] str = body.Split('|');
-            string name = str[0].ToString();
-            string pwd = str[1].ToString();
-            string select = "UPDATE [dbo].[tlogin]SET [password] ='"+pwd+ "' WHERE [loginname]='" + name.Trim() + "'";
+            Dictionary<string, object> _ReqDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(body);
+            string name = "";
+            string newpwd = "";
+            try
+            {
+                name = _ReqDic["LoginName"].ToString().Trim();
+                newpwd = _ReqDic["NewPassword"].ToString().Trim();
+            }
+            catch
+            {
 
-            int data = ClsMSSQL.Update(select, ClsDBCon.ConStrKj);
+                
+                return;
+            }
+            // string select = "UPDATE [dbo].[tlogin]SET [password] ='" + pwd + "' WHERE [loginname]='" + name + "'";
+            List<SqlParameter> _ParameterList = new List<SqlParameter>();
+            _ParameterList.Add(new SqlParameter("@loginname", name));
+            _ParameterList.Add(new SqlParameter("@newpassword", newpwd));
+            int data = SqlOperation.UpDat(_ParameterList.ToArray<SqlParameter>());
             string sJSON = JsonConvert.SerializeObject(data, Formatting.Indented);
-            return sJSON;
+            if (Convert.ToInt32(sJSON) == 1)
+            {
+                ResponseResult.AlterSuess("Ok", "");
+                HttpContext.Current.Response.ContentType = "application/text";
+                //HttpContext.Current.Response.Write(sJSON);
+            }
+            else
+            {
+                ResponseResult.AlterFail("通信异常", "");
+            }
+           
 
         }
         [OperationContract]
         [WebInvoke(Method = "POST", UriTemplate = "SELECT", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
-        public string SELECT(Stream dt)
+        public void SELECT(Stream dt)
         {
-            StreamReader reader = new StreamReader(dt);
+            string _result = "";
+            StreamReader reader = new StreamReader(dt, Encoding.UTF8);
             string body = reader.ReadToEnd();
             Debug.Print(body);
-            string[] str = body.Split('|');
-            string id = str[0].ToString();
-            string role = str[1].ToString();
-            string select = "SELECT [id],[loginname],[xm],[ygid] FROM [dbo].[tlogin] where [ygid]='" + id.Trim() + "'and[role] = '" + role.Trim() + "'";
-            
-            DataTable data = ClsMSSQL.GetDataTable(select, ClsDBCon.ConStrKj);
-            string sJSON = JsonConvert.SerializeObject(data, Formatting.Indented);
-            return sJSON;
+            Dictionary<string, object> _ReqDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(body);
+            string ygid = "";
+            string role= "";
+            try
+            {
+                ygid = _ReqDic["ygid"].ToString().Trim();
+                role = _ReqDic["role"].ToString().Trim();
+            }
+            catch
+            {
+
+
+                return;
+            }
+         
+           
+            List<SqlParameter> _ParameterList = new List<SqlParameter>();
+            _ParameterList.Add(new SqlParameter("@ygid", ygid));
+            _ParameterList.Add(new SqlParameter("@role", role));
+            if (ClsMSSQL.Exists2("tlogin", "ygid", ygid, ClsDBCon.ConStrKj))
+            {
+                DataTable data = SqlOperation.Returnqueryresults1(_ParameterList.ToArray<SqlParameter>());
+                
+                string sJSON = JsonConvert.SerializeObject(data, Formatting.Indented);
+                ResponseResult.LoginSuess("ok", "");
+                HttpContext.Current.Response.ContentType = "application/text";
+                HttpContext.Current.Response.Write(sJSON);
+            }
+            else
+            {
+                ResponseResult.AlterFail("通信异常", "");
+            }
+                
+           
 
         }
         public void DoWork()

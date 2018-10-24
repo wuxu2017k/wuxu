@@ -33,7 +33,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.lst = new System.Windows.Forms.ListBox();
             this.txtnewpwd = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
@@ -42,6 +41,7 @@
             this.lblname = new System.Windows.Forms.Label();
             this.txtjgid = new System.Windows.Forms.TextBox();
             this.txtjgname = new System.Windows.Forms.TextBox();
+            this.textBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // txtname
@@ -85,16 +85,6 @@
             this.button1.Text = "登录";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // lst
-            // 
-            this.lst.Dock = System.Windows.Forms.DockStyle.Right;
-            this.lst.FormattingEnabled = true;
-            this.lst.ItemHeight = 12;
-            this.lst.Location = new System.Drawing.Point(260, 0);
-            this.lst.Name = "lst";
-            this.lst.Size = new System.Drawing.Size(487, 420);
-            this.lst.TabIndex = 5;
             // 
             // txtnewpwd
             // 
@@ -172,11 +162,21 @@
             this.txtjgname.TabIndex = 13;
             this.txtjgname.Visible = false;
             // 
+            // textBox
+            // 
+            this.textBox.Dock = System.Windows.Forms.DockStyle.Right;
+            this.textBox.Location = new System.Drawing.Point(259, 0);
+            this.textBox.Multiline = true;
+            this.textBox.Name = "textBox";
+            this.textBox.Size = new System.Drawing.Size(488, 420);
+            this.textBox.TabIndex = 14;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(747, 420);
+            this.Controls.Add(this.textBox);
             this.Controls.Add(this.txtjgname);
             this.Controls.Add(this.txtjgid);
             this.Controls.Add(this.lblname);
@@ -185,7 +185,6 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtnewpwd);
-            this.Controls.Add(this.lst);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -205,7 +204,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ListBox lst;
         private System.Windows.Forms.TextBox txtnewpwd;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button2;
@@ -214,6 +212,7 @@
         private System.Windows.Forms.Label lblname;
         private System.Windows.Forms.TextBox txtjgid;
         private System.Windows.Forms.TextBox txtjgname;
+        private System.Windows.Forms.TextBox textBox;
     }
 }
 

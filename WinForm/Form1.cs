@@ -26,7 +26,7 @@ namespace WinForm
             _WriteDic.Add("LoginName", txtname.Text.Trim());
             _WriteDic.Add("Password", txtpwd.Text.Trim());
             string str = JsonConvert.SerializeObject(_WriteDic);
-            string requestUrl = "http://127.0.0.1/DLT/DLT.svc/LogIn";
+            string requestUrl = "http://localhost:34253/DLT.svc/LogIn";
             HttpWebRequest req = WebRequest.Create(requestUrl) as HttpWebRequest;
             req.Method = "POST";
             byte[] barr = Encoding.UTF8.GetBytes(str.Trim());//将串转换为字节数组
@@ -38,13 +38,13 @@ namespace WinForm
             }
             using (HttpWebResponse resp = req.GetResponse() as HttpWebResponse)
             {
-                lst.Items.Add(string.Format("返回状态码:{0}", (int)resp.StatusCode));
-                lst.Items.Add(string.Format("返回状态描述:{0}", resp.StatusDescription));
+               
                 Stream stream1 = resp.GetResponseStream();
                 StreamReader sr = new StreamReader(stream1, Encoding.UTF8);
                 string respBody = sr.ReadToEnd();
                
-                lst.Items.Add(respBody);
+
+                textBox.Text = respBody;
             }
             lblid.Visible = true;
             lblname.Visible = true;
@@ -62,8 +62,12 @@ namespace WinForm
 
         private void button2_Click(object sender, EventArgs e)
         {
-            string str = txtname.Text.Trim()+"|"+txtnewpwd.Text.Trim();
-            string requestUrl = "http://127.0.0.1/DLT/DLT.svc/SET";
+
+            Dictionary<string, object> _WriteDic = new Dictionary<string, object>();
+            _WriteDic.Add("LoginName", txtname.Text.Trim());
+            _WriteDic.Add("NewPassword", txtnewpwd.Text.Trim());
+            string str = JsonConvert.SerializeObject(_WriteDic);
+            string requestUrl = "http://localhost:34253/DLT.svc/SET";//http://127.0.0.1/DLT/DLT.svc/SET
             HttpWebRequest req = WebRequest.Create(requestUrl) as HttpWebRequest;
             req.Method = "POST";
             byte[] barr = Encoding.UTF8.GetBytes(str.Trim());//将串转换为字节数组
@@ -75,20 +79,22 @@ namespace WinForm
             }
             using (HttpWebResponse resp = req.GetResponse() as HttpWebResponse)
             {
-                lst.Items.Add(string.Format("返回状态码:{0}", (int)resp.StatusCode));
-                lst.Items.Add(string.Format("返回状态描述:{0}", resp.StatusDescription));
+                
                 Stream stream1 = resp.GetResponseStream();
                 StreamReader sr = new StreamReader(stream1);
                 string respBody = sr.ReadToEnd();
-                lst.Items.Add(respBody);
+                textBox.Text = respBody;
 
             }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            string str = txtjgid.Text.Trim() + "|" + txtjgname.Text.Trim();
-            string requestUrl = "http://127.0.0.1/DLT/DLT.svc/SELECT";
+            Dictionary<string, object> _WriteDic = new Dictionary<string, object>();
+            _WriteDic.Add("ygid", txtjgid.Text.Trim());
+            _WriteDic.Add("role", txtjgname.Text.Trim());
+            string str = JsonConvert.SerializeObject(_WriteDic);
+            string requestUrl = "http://localhost:34253/DLT.svc/SELECT";//http://127.0.0.1/DLT/DLT.svc/SELECT
             HttpWebRequest req = WebRequest.Create(requestUrl) as HttpWebRequest;
             req.Method = "POST";
             byte[] barr = Encoding.UTF8.GetBytes(str.Trim());//将串转换为字节数组
@@ -100,12 +106,11 @@ namespace WinForm
             }
             using (HttpWebResponse resp = req.GetResponse() as HttpWebResponse)
             {
-                lst.Items.Add(string.Format("返回状态码:{0}", (int)resp.StatusCode));
-                lst.Items.Add(string.Format("返回状态描述:{0}", resp.StatusDescription));
+                
                 Stream stream1 = resp.GetResponseStream();
                 StreamReader sr = new StreamReader(stream1);
                 string respBody = sr.ReadToEnd();
-                lst.Items.Add(respBody);
+                textBox.Text = respBody;
 
             }
         }
