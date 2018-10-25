@@ -6,13 +6,11 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Web;
 using System.Text;
 using System.Web;
-using Newtonsoft.Json;
 using System.Data.SqlClient;
 
 namespace DLT
@@ -30,43 +28,55 @@ namespace DLT
         [WebInvoke(Method = "POST", UriTemplate = "LogIn", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
         public void LogIn(Stream dt)
         {
-            string _result = "";
-            StreamReader reader = new StreamReader(dt, Encoding.UTF8);
-            string body = reader.ReadToEnd();
-            Debug.Print(body);
-            Dictionary<string, object> _ReqDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(body);
-            string name = "";
-            string pwd = "";
             try
             {
-                name = _ReqDic["LoginName"].ToString().Trim();
-                pwd = _ReqDic["Password"].ToString().Trim();
-            }
-            catch
-            {
-                
-                ResponseResult.ErrorResponse("未输入用户名或密码", "ONWATER");
-                return;
-            }
+                StreamReader reader = new StreamReader(dt, Encoding.UTF8);
+                string body = reader.ReadToEnd();
+                Debug.Print(body);
+                Dictionary<string, object> _ReqDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(body);
+                string name = "";
+                string pwd = "";
+                try
+                {
+                    name = _ReqDic["LoginName"].ToString().Trim();
+                    pwd = _ReqDic["Password"].ToString().Trim();
+                }
+                catch
+                {
 
-            List<SqlParameter> _ParameterList = new List<SqlParameter>();
-            _ParameterList.Add(new SqlParameter("@loginname", name));
-            _ParameterList.Add(new SqlParameter("@password", pwd));
-            if(ClsMSSQL.Exists1("tlogin","loginname",name,"password",pwd,ClsDBCon.ConStrKj))
-            {
-                DataTable data = SqlOperation.Returnqueryresults(_ParameterList.ToArray<SqlParameter>());
-                //DataTable data = ClsMSSQL.返回查询结果(new SqlCommand("select * from tlogin where loginname = @loginname and password = @password"), _ParameterList.ToArray<SqlParameter>());
-                string sJSON = JsonConvert.SerializeObject(data, Formatting.Indented);
-                ResponseResult.LoginSuess("ok","^");
-                //return sJSON;
-                HttpContext.Current.Response.ContentType = "application/text";
-                HttpContext.Current.Response.Write(sJSON);
+                    ResponseResult.ErrorResponse("未输入用户名或密码", "ONWATER");
+                    return;
+                }
+
+                List<SqlParameter> _ParameterList = new List<SqlParameter>();
+                _ParameterList.Add(new SqlParameter("@loginname", name));
+                _ParameterList.Add(new SqlParameter("@password", pwd));
+                if (ClsMSSQL.Exists1("tlogin", "loginname", name, "password", pwd, ClsDBCon.ConStrKj))
+                {
+                    DataTable data = SqlOperation.Returnqueryresults(_ParameterList.ToArray<SqlParameter>());
+                    //DataTable data = ClsMSSQL.返回查询结果(new SqlCommand("select * from tlogin where loginname = @loginname and password = @password"), _ParameterList.ToArray<SqlParameter>());
+                    string sJSON = JsonConvert.SerializeObject(data,Formatting.Indented);
+
+                    //return sJSON;
+                    HttpContext.Current.Response.ContentType = "application/text";
+                    ResponseResult.LoginSuess("ok", sJSON);
+                }
+                else
+                {
+                    ResponseResult.UserNO("账户或密码不正确", "");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ResponseResult.UserNO("账户或密码不正确", "");
+                HttpContext.Current.Response.ContentType = "application/text";
+                ResponseResult.ErrorResponse(ex.Message, "");
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dt"></param>
         [OperationContract]
         [WebInvoke(Method = "POST", UriTemplate = "SET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
         public void SET(Stream dt)
@@ -84,9 +94,7 @@ namespace DLT
                 newpwd = _ReqDic["newpassword"].ToString().Trim();
             }
             catch
-            {
-
-                
+            {   
                 return;
             }
             // string select = "UPDATE [dbo].[tlogin]SET [password] ='" + pwd + "' WHERE [loginname]='" + name + "'";
@@ -94,20 +102,21 @@ namespace DLT
             _ParameterList.Add(new SqlParameter("@loginname", name));
             _ParameterList.Add(new SqlParameter("@newpassword", newpwd));
              int data = SqlOperation.UpDat(_ParameterList.ToArray<SqlParameter>());
-            string sJSON = JsonConvert.SerializeObject(data, Formatting.Indented);
+            string sJSON = JsonConvert.SerializeObject(data);
             if (Convert.ToInt32(sJSON) == 1)
             {
-                ResponseResult.AlterSuess("Ok", "");
+              
                 HttpContext.Current.Response.ContentType = "application/text";
+                ResponseResult.AlterSuess("Ok", "修改成功");
                 //HttpContext.Current.Response.Write(sJSON);
             }
             else
             {
                 ResponseResult.AlterFail("通信异常", "");
             }
-           
-
         }
+
+
         [OperationContract]
         [WebInvoke(Method = "POST", UriTemplate = "SELECT", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
         public void SELECT(Stream dt)
@@ -126,12 +135,8 @@ namespace DLT
             }
             catch
             {
-
-
                 return;
             }
-         
-           
             List<SqlParameter> _ParameterList = new List<SqlParameter>();
             _ParameterList.Add(new SqlParameter("@ygid", ygid));
             _ParameterList.Add(new SqlParameter("@role", role));
@@ -139,18 +144,15 @@ namespace DLT
             {
                 DataTable data = SqlOperation.Returnqueryresults1(_ParameterList.ToArray<SqlParameter>());
                 
-                string sJSON = JsonConvert.SerializeObject(data, Formatting.Indented);
-                ResponseResult.LoginSuess("ok", "");
+                string sJSON = JsonConvert.SerializeObject(data,Formatting.Indented);
+               
                 HttpContext.Current.Response.ContentType = "application/text";
-                HttpContext.Current.Response.Write(sJSON);
+                ResponseResult.LoginSuess("ok", sJSON);
             }
             else
             {
                 ResponseResult.AlterFail("通信异常", "");
             }
-                
-           
-
         }
         public void DoWork()
         {

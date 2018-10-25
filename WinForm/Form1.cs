@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DLTLib.Classes;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,50 +23,72 @@ namespace WinForm
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Dictionary<string, object> _WriteDic = new Dictionary<string, object>();
-            _WriteDic.Add("LoginName", txtname.Text.Trim());
-            _WriteDic.Add("Password", txtpwd.Text.Trim());
-            string str = JsonConvert.SerializeObject(_WriteDic);
-            string requestUrl = "http://127.0.0.1/DLT/DLT.svc/LogIn";
-            HttpWebRequest req = WebRequest.Create(requestUrl) as HttpWebRequest;
-            req.Method = "POST";
-            byte[] barr = Encoding.UTF8.GetBytes(str.Trim());//将串转换为字节数组
-            req.ContentLength = barr.Length;//length总数
-            using (Stream myStream = req.GetRequestStream())
+
+
+            //Dictionary<string, object> _WriteDic = new Dictionary<string, object>();
+            //_WriteDic.Add("LoginName", txtname.Text.Trim());
+            //_WriteDic.Add("Password", txtpwd.Text.Trim());
+            //string str = JsonConvert.SerializeObject(_WriteDic);
+            //string requestUrl = "http://127.0.0.1/DLT/DLT.svc/LogIn";
+            //HttpWebRequest req = WebRequest.Create(requestUrl) as HttpWebRequest;
+            //req.Method = "POST";
+            //byte[] barr = Encoding.UTF8.GetBytes(str.Trim());//将串转换为字节数组
+            //req.ContentLength = barr.Length;//length总数
+            //using (Stream myStream = req.GetRequestStream())
+            //{
+            //    myStream.Write(barr, 0, barr.Length);
+            //    myStream.Close();
+            //}
+            //using (HttpWebResponse resp = req.GetResponse() as HttpWebResponse)
+            //{
+
+            //    Stream stream1 = resp.GetResponseStream();
+            //    StreamReader sr = new StreamReader(stream1, Encoding.UTF8);
+            //    string respBody = sr.ReadToEnd();
+
+
+            string respBody = ServiceCreat.Creat(txtname.Text.Trim(), txtpwd.Text.Trim());
+
+
+            Dictionary<string, object> _RepDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(respBody);
+
+            //_RepDic["res"] = JsonConvert.SerializeObject(data);
+            //respBody = JsonConvert.SerializeObject(_RepDic,Formatting.Indented);
+            textBox.Text = respBody.Replace("\\r\\n","\r\n").Replace("\\\"", "\"") + "\r\n";
+            //textBox.Text += _RepDic["res"];
+
+            if (Convert.ToBoolean(_RepDic["status"]))
             {
-                myStream.Write(barr, 0, barr.Length);
-                myStream.Close();
-            }
-            using (HttpWebResponse resp = req.GetResponse() as HttpWebResponse)
-            {
-               
-                Stream stream1 = resp.GetResponseStream();
-                StreamReader sr = new StreamReader(stream1, Encoding.UTF8);
-                string respBody = sr.ReadToEnd();
+                button1.Visible = false;
+                lblid.Visible = true;
+                lblname.Visible = true;
+                txtjgid.Visible = true;
+                txtjgname.Visible = true;
+                button3.Visible = true;
+                button2.Visible = true;
+                button4.Visible = true;
+                label3.Visible = true;
+                txtnewpwd.Visible = true;
+                txtname.Enabled = false;
+                txtpwd.Enabled = false;
+                //List<Control> DisplayControlsSet = new List<Control>();
+                //ControlCollection FormControlList = (ControlCollection)this.FindForm().Controls;
+                //for (int i = 0; i < FormControlList.Count; i++)
+                //{
+                //    if (FormControlList[i].Tag.ToString() == "215")
+                //    {
+                //        DisplayControlsSet.Add(FormControlList[i]);
+                //    }
+                //}
 
-                
-               
-                textBox.Text = respBody;
-
-
-               if (respBody.IndexOf("true") != -1)
-                {
-                    button1.Visible= false;
-                   lblid.Visible = true;
-                   lblname.Visible = true;
-                    txtjgid.Visible = true;
-                   txtjgname.Visible = true;
-                    button3.Visible = true;
-                    button2.Visible = true;
-                    button4.Visible = true;
-                    label3.Visible = true;
-                    txtnewpwd.Visible = true;
-                    txtname.Enabled = false;
-                    txtpwd.Enabled = false;
-                }
+                //for (int i = 0; i < DisplayControlsSet.Count; i++)
+                //{
+                //    DisplayControlsSet[i].Visible = false;
+                //}
 
             }
-           
+            //   }
+
 
         }
 
@@ -114,12 +137,13 @@ namespace WinForm
             }
             using (HttpWebResponse resp = req.GetResponse() as HttpWebResponse)
             {
-                
+
                 Stream stream1 = resp.GetResponseStream();
                 StreamReader sr = new StreamReader(stream1);
                 string respBody = sr.ReadToEnd();
-                textBox.Text = respBody;
+                Dictionary<string, object> _RepDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(respBody);
 
+                textBox.Text = respBody.Replace("\\r\\n", "\r\n").Replace("\\\"", "\"") + "\r\n";
             }
         }
 
@@ -138,7 +162,7 @@ namespace WinForm
             txtjgname.Visible = false;
             button3.Visible = false;
             button2.Visible = false;
-         
+
             label3.Visible = false;
             txtnewpwd.Visible = false;
             txtname.Enabled = true;
@@ -147,5 +171,5 @@ namespace WinForm
             textBox.Clear();
         }
     }
-    }
+}
 

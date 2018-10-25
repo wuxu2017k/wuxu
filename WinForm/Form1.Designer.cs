@@ -93,6 +93,7 @@
             this.txtnewpwd.Name = "txtnewpwd";
             this.txtnewpwd.Size = new System.Drawing.Size(100, 21);
             this.txtnewpwd.TabIndex = 6;
+            this.txtnewpwd.Tag = "215";
             this.txtnewpwd.Visible = false;
             // 
             // label3
@@ -102,6 +103,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 12);
             this.label3.TabIndex = 7;
+            this.label3.Tag = "215";
             this.label3.Text = "新密码";
             this.label3.Visible = false;
             // 
@@ -111,6 +113,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 8;
+            this.button2.Tag = "215";
             this.button2.Text = "修改密码";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Visible = false;
@@ -122,6 +125,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 9;
+            this.button3.Tag = "215";
             this.button3.Text = "查询全部";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Visible = false;
@@ -134,6 +138,7 @@
             this.lblid.Name = "lblid";
             this.lblid.Size = new System.Drawing.Size(41, 12);
             this.lblid.TabIndex = 10;
+            this.lblid.Tag = "215";
             this.lblid.Text = "机构ID";
             this.lblid.Visible = false;
             // 
@@ -144,6 +149,7 @@
             this.lblname.Name = "lblname";
             this.lblname.Size = new System.Drawing.Size(53, 12);
             this.lblname.TabIndex = 11;
+            this.lblname.Tag = "215";
             this.lblname.Text = "机构名称";
             this.lblname.Visible = false;
             // 
@@ -153,6 +159,7 @@
             this.txtjgid.Name = "txtjgid";
             this.txtjgid.Size = new System.Drawing.Size(100, 21);
             this.txtjgid.TabIndex = 12;
+            this.txtjgid.Tag = "215";
             this.txtjgid.Visible = false;
             // 
             // txtjgname
@@ -161,12 +168,12 @@
             this.txtjgname.Name = "txtjgname";
             this.txtjgname.Size = new System.Drawing.Size(100, 21);
             this.txtjgname.TabIndex = 13;
+            this.txtjgname.Tag = "215";
             this.txtjgname.Visible = false;
             // 
             // textBox
             // 
             this.textBox.Dock = System.Windows.Forms.DockStyle.Right;
-            this.textBox.Enabled = false;
             this.textBox.Location = new System.Drawing.Point(259, 0);
             this.textBox.Multiline = true;
             this.textBox.Name = "textBox";
@@ -205,6 +212,7 @@
             this.Controls.Add(this.txtpwd);
             this.Controls.Add(this.txtname);
             this.Name = "Form1";
+            this.Tag = "215";
             this.Text = "Form1";
             this.ResumeLayout(false);
             this.PerformLayout();
