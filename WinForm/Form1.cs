@@ -95,56 +95,64 @@ namespace WinForm
         private void button2_Click(object sender, EventArgs e)
         {
 
-            Dictionary<string, object> _WriteDic = new Dictionary<string, object>();
-            _WriteDic.Add("loginname", txtname.Text.Trim());
-            _WriteDic.Add("newpassword", txtnewpwd.Text.Trim());
-            string str = JsonConvert.SerializeObject(_WriteDic);
-            string requestUrl = "http://127.0.0.1/DLT/DLT.svc/SET";//http://localhost:34253/DLT.svc/SET
-            HttpWebRequest req = WebRequest.Create(requestUrl) as HttpWebRequest;
-            req.Method = "POST";
-            byte[] barr = Encoding.UTF8.GetBytes(str.Trim());//将串转换为字节数组
-            req.ContentLength = barr.Length;//length总数
-            using (Stream myStream = req.GetRequestStream())
-            {
-                myStream.Write(barr, 0, barr.Length);
-                myStream.Close();
-            }
-            using (HttpWebResponse resp = req.GetResponse() as HttpWebResponse)
-            {
-                Stream stream1 = resp.GetResponseStream();
-                StreamReader sr = new StreamReader(stream1);
-                string respBody = sr.ReadToEnd();
-                textBox.Text = respBody;
+            //Dictionary<string, object> _WriteDic = new Dictionary<string, object>();
+            //_WriteDic.Add("loginname", txtname.Text.Trim());
+            //_WriteDic.Add("newpassword", txtnewpwd.Text.Trim());
+            //string str = JsonConvert.SerializeObject(_WriteDic);
+            //string requestUrl = "http://127.0.0.1/DLT/DLT.svc/SET";//http://localhost:34253/DLT.svc/SET
+            //HttpWebRequest req = WebRequest.Create(requestUrl) as HttpWebRequest;
+            //req.Method = "POST";
+            //byte[] barr = Encoding.UTF8.GetBytes(str.Trim());//将串转换为字节数组
+            //req.ContentLength = barr.Length;//length总数
+            //using (Stream myStream = req.GetRequestStream())
+            //{
+            //    myStream.Write(barr, 0, barr.Length);
+            //    myStream.Close();
+            //}
+            //using (HttpWebResponse resp = req.GetResponse() as HttpWebResponse)
+            //{
+            //    Stream stream1 = resp.GetResponseStream();
+            //    StreamReader sr = new StreamReader(stream1);
+            //    string respBody = sr.ReadToEnd();
+            //    textBox.Text = respBody;
 
-            }
+            //}
+            string respBody = ServiceCreat.Alter(txtname.Text.Trim(), txtpwd.Text.Trim());
+            textBox.Text = respBody;
+
+
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Dictionary<string, object> _WriteDic = new Dictionary<string, object>();
-            _WriteDic.Add("ygid", txtjgid.Text.Trim());
-            _WriteDic.Add("role", txtjgname.Text.Trim());
-            string str = JsonConvert.SerializeObject(_WriteDic);
-            string requestUrl = "http://127.0.0.1/DLT/DLT.svc/SELECT";//http://localhost:34253/DLT.svc/SELECT
-            HttpWebRequest req = WebRequest.Create(requestUrl) as HttpWebRequest;
-            req.Method = "POST";
-            byte[] barr = Encoding.UTF8.GetBytes(str.Trim());//将串转换为字节数组
-            req.ContentLength = barr.Length;//length总数
-            using (Stream myStream = req.GetRequestStream())
-            {
-                myStream.Write(barr, 0, barr.Length);
-                myStream.Close();
-            }
-            using (HttpWebResponse resp = req.GetResponse() as HttpWebResponse)
-            {
+            //    Dictionary<string, object> _WriteDic = new Dictionary<string, object>();
+            //    _WriteDic.Add("ygid", txtjgid.Text.Trim());
+            //    _WriteDic.Add("role", txtjgname.Text.Trim());
+            //    string str = JsonConvert.SerializeObject(_WriteDic);
+            //    string requestUrl = "http://127.0.0.1/DLT/DLT.svc/SELECT";//http://localhost:34253/DLT.svc/SELECT
+            //    HttpWebRequest req = WebRequest.Create(requestUrl) as HttpWebRequest;
+            //    req.Method = "POST";
+            //    byte[] barr = Encoding.UTF8.GetBytes(str.Trim());//将串转换为字节数组
+            //    req.ContentLength = barr.Length;//length总数
+            //    using (Stream myStream = req.GetRequestStream())
+            //    {
+            //        myStream.Write(barr, 0, barr.Length);
+            //        myStream.Close();
+            //    }
+            //    using (HttpWebResponse resp = req.GetResponse() as HttpWebResponse)
+            //    {
 
-                Stream stream1 = resp.GetResponseStream();
-                StreamReader sr = new StreamReader(stream1);
-                string respBody = sr.ReadToEnd();
-                Dictionary<string, object> _RepDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(respBody);
+            //        Stream stream1 = resp.GetResponseStream();
+            //        StreamReader sr = new StreamReader(stream1);
+            //        string respBody = sr.ReadToEnd();
+            //        Dictionary<string, object> _RepDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(respBody);
 
-                textBox.Text = respBody.Replace("\\r\\n", "\r\n").Replace("\\\"", "\"") + "\r\n";
-            }
+            //        //_RepDic["res"] = JsonConvert.SerializeObject(data);
+            //        //respBody = JsonConvert.SerializeObject(_RepDic,Formatting.Indented);
+            //        textBox.Text = respBody.Replace("\\r\\n", "\r\n").Replace("\\\"", "\"") + "\r\n";
+            //    }
+            string respBody = ServiceCreat.SelectAll(txtjgid.Text.Trim(), txtjgname.Text.Trim());
+            textBox.Text = respBody.Replace("\\r\\n", "\r\n").Replace("\\\"", "\"") + "\r\n";
         }
 
         private void button4_Click(object sender, EventArgs e)
